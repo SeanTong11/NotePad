@@ -26,7 +26,7 @@
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="11" />
+        android:targetSdkVersion="28" />
 
     <application
         android:icon="@drawable/app_notes"
