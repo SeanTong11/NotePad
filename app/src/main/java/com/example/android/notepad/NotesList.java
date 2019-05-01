@@ -26,8 +26,12 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -35,8 +39,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 
 /**
@@ -53,6 +59,12 @@ public class NotesList extends ListActivity {
 
     // For logging and debugging
     private static final String TAG = "NotesList";
+    private SearchView searchView;
+    private ListView listView;
+    private Cursor cursor;
+
+
+
 
     /**
      * The columns needed by the cursor adapter
@@ -73,6 +85,8 @@ public class NotesList extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.notepad_main);
 
         // The user does not need to hold down the key to use menu shortcuts.
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
@@ -102,7 +116,7 @@ public class NotesList extends ListActivity {
          *
          * Please see the introductory note about performing provider operations on the UI thread.
          */
-        Cursor cursor = managedQuery(
+        cursor = managedQuery(
             getIntent().getData(),            // Use the default content URI for the provider.
             PROJECTION,                       // Return the note ID and title for each note.
             null,                             // No where clause, return all records.
@@ -126,7 +140,7 @@ public class NotesList extends ListActivity {
         int[] viewIDs = { R.id.text1, R.id.time };
 
         // Creates the backing adapter for the ListView.
-        SimpleCursorAdapter adapter
+        final SimpleCursorAdapter adapter
             = new SimpleCursorAdapter(
                       this,                             // The Context for the ListView
                       R.layout.noteslist_item,          // Points to the XML for a list item
@@ -137,6 +151,49 @@ public class NotesList extends ListActivity {
 
         // Sets the ListView's adapter to be the cursor adapter that was just created.
         setListAdapter(adapter);
+        /*---------------------------------------------------*/
+
+        searchView = (SearchView) findViewById(R.id.search);
+        searchView.setIconifiedByDefault(false);
+        searchView.setSubmitButtonEnabled(true);
+
+        SpannableString spannableString = new SpannableString("search");
+        spannableString.setSpan(new ForegroundColorSpan(Color.GRAY), 0,  spannableString.length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        searchView.setQueryHint(spannableString);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                if (searchView != null) {
+                    //得到输入管理对象
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+                    }
+                    //不获取焦点
+                    searchView.clearFocus();
+                }
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                cursor = managedQuery(
+                        getIntent().getData(),            // Use the default content URI for the provider.
+                        PROJECTION,                       // Return the note ID and title for each note.
+                        NotePad.Notes.COLUMN_NAME_TITLE + " LIKE '%" + s + "%'",// search the title
+                        null,                             // No where clause, therefore no where column values.
+                        NotePad.Notes.DEFAULT_SORT_ORDER  // Use the default sort order.
+                );
+                adapter.swapCursor(cursor);
+                return true;
+            }
+        });
+
+
     }
 
     /**
