@@ -87,6 +87,12 @@ public class NotesList extends ListActivity {
 
     };
 
+    private static final String[] PROJECTION2 =
+            new String[] {
+                    NotePad.Notes._ID,
+                    NotePad.Notes.COLUMN_NAME_NOTE,
+            };
+
     /** The index of the title column */
     private static final int COLUMN_INDEX_TITLE = 1;
 
@@ -530,6 +536,15 @@ public class NotesList extends ListActivity {
         // Appends the selected note's ID to the URI sent with the incoming Intent.
         Uri noteUri = ContentUris.withAppendedId(getIntent().getData(), info.id);
 
+
+        // Appends the selected note's ID to the URI sent with the incoming Intent.
+        Cursor mCursor = managedQuery(
+                noteUri,         // The URI that gets multiple notes from the provider.
+                PROJECTION2,   // A projection that returns the note ID and note content for each note.
+                null,         // No "where" clause selection criteria.
+                null,         // No "where" clause selection values.
+                null          // Use the default sort order (modification date, descending)
+        );
         /*
          * Gets the menu item's ID and compares it to known actions.
          */
@@ -568,7 +583,23 @@ public class NotesList extends ListActivity {
   
             // Returns to the caller and skips further processing.
             return true;
-        default:
+
+
+            case R.id.context_share:
+
+                //android中数据库处理使用cursor时，
+                // 游标不是放在为0的下标，而是放在为-1的下标处开始的”，
+                // 也就是说：“返回给cursor查询结果时，不能够马上从cursor中提取值”
+                while(mCursor.moveToNext()){
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+                    intent.putExtra(Intent.EXTRA_TEXT, "hi,我是小童，来自NotePad的分享："+mCursor.getString(1));
+                    startActivity(Intent.createChooser(intent, "分享到"));
+                }
+
+
+            default:
             return super.onContextItemSelected(item);
         }
     }

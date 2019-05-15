@@ -29,10 +29,11 @@ public final class R {
         public static final int context_copy=0x7f06000f;
         public static final int context_delete=0x7f060010;
         public static final int context_open=0x7f06000e;
+        public static final int context_share=0x7f060011;
         public static final int main=0x7f060004;
-        public static final int menu_add=0x7f060011;
+        public static final int menu_add=0x7f060012;
         public static final int menu_delete=0x7f06000d;
-        public static final int menu_paste=0x7f060012;
+        public static final int menu_paste=0x7f060013;
         public static final int menu_revert=0x7f06000c;
         public static final int menu_save=0x7f06000b;
         public static final int note=0x7f060003;
@@ -67,13 +68,14 @@ public final class R {
         public static final int menu_paste=0x7f040009;
         public static final int menu_revert=0x7f04000a;
         public static final int menu_save=0x7f04000b;
-        public static final int nothing_to_save=0x7f04000c;
-        public static final int resolve_edit=0x7f04000d;
-        public static final int resolve_title=0x7f04000e;
-        public static final int text_title=0x7f04000f;
-        public static final int title_create=0x7f040010;
-        public static final int title_edit=0x7f040011;
-        public static final int title_edit_title=0x7f040012;
-        public static final int title_notes_list=0x7f040013;
+        public static final int menu_share=0x7f04000c;
+        public static final int nothing_to_save=0x7f04000d;
+        public static final int resolve_edit=0x7f04000e;
+        public static final int resolve_title=0x7f04000f;
+        public static final int text_title=0x7f040010;
+        public static final int title_create=0x7f040011;
+        public static final int title_edit=0x7f040012;
+        public static final int title_edit_title=0x7f040013;
+        public static final int title_notes_list=0x7f040014;
     }
 }

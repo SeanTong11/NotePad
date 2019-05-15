@@ -235,8 +235,27 @@
                     "startLine": 14,
                     "startColumn": 4,
                     "startOffset": 621,
+                    "endColumn": 41,
+                    "endOffset": 658
+                },
+                "from": {
+                    "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 42,
+                        "startColumn": 4,
+                        "startOffset": 1731,
+                        "endColumn": 41,
+                        "endOffset": 1768
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 663,
                     "endColumn": 68,
-                    "endOffset": 685
+                    "endOffset": 727
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
@@ -251,11 +270,11 @@
             },
             {
                 "to": {
-                    "startLine": 15,
+                    "startLine": 16,
                     "startColumn": 4,
-                    "startOffset": 690,
+                    "startOffset": 732,
                     "endColumn": 50,
-                    "endOffset": 736
+                    "endOffset": 778
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
@@ -270,11 +289,11 @@
             },
             {
                 "to": {
-                    "startLine": 16,
+                    "startLine": 17,
                     "startColumn": 4,
-                    "startOffset": 741,
+                    "startOffset": 783,
                     "endColumn": 52,
-                    "endOffset": 789
+                    "endOffset": 831
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
@@ -289,11 +308,11 @@
             },
             {
                 "to": {
-                    "startLine": 17,
+                    "startLine": 18,
                     "startColumn": 4,
-                    "startOffset": 794,
+                    "startOffset": 836,
                     "endColumn": 45,
-                    "endOffset": 835
+                    "endOffset": 877
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
@@ -308,11 +327,11 @@
             },
             {
                 "to": {
-                    "startLine": 18,
+                    "startLine": 19,
                     "startColumn": 4,
-                    "startOffset": 840,
+                    "startOffset": 882,
                     "endColumn": 49,
-                    "endOffset": 885
+                    "endOffset": 927
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
@@ -327,11 +346,11 @@
             },
             {
                 "to": {
-                    "startLine": 19,
+                    "startLine": 20,
                     "startColumn": 4,
-                    "startOffset": 890,
+                    "startOffset": 932,
                     "endColumn": 49,
-                    "endOffset": 935
+                    "endOffset": 977
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
@@ -346,11 +365,11 @@
             },
             {
                 "to": {
-                    "startLine": 20,
+                    "startLine": 21,
                     "startColumn": 4,
-                    "startOffset": 940,
+                    "startOffset": 982,
                     "endColumn": 56,
-                    "endOffset": 992
+                    "endOffset": 1034
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
@@ -365,11 +384,11 @@
             },
             {
                 "to": {
-                    "startLine": 21,
+                    "startLine": 22,
                     "startColumn": 4,
-                    "startOffset": 997,
+                    "startOffset": 1039,
                     "endColumn": 50,
-                    "endOffset": 1043
+                    "endOffset": 1085
                 },
                 "from": {
                     "file": "E:\\androiddev\\androidclass\\NotePad\\app\\src\\main\\res\\values\\strings.xml",
