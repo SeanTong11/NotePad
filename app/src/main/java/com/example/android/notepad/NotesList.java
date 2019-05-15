@@ -18,6 +18,7 @@ package com.example.android.notepad;
 
 import com.example.android.notepad.NotePad;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ClipboardManager;
 import android.content.ClipData;
@@ -25,6 +26,7 @@ import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -39,11 +41,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 /**
  * Displays a list of notes. Will display notes from the {@link Uri}
@@ -62,6 +69,10 @@ public class NotesList extends ListActivity {
     private SearchView searchView;
     private ListView listView;
     private Cursor cursor;
+    private SharedPreferences sharedPreferences;
+    private String currentColor;
+
+    private ImageButton colorImageButton;
 
 
 
@@ -84,6 +95,9 @@ public class NotesList extends ListActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.notepad_main);
@@ -194,7 +208,76 @@ public class NotesList extends ListActivity {
         });
 
 
+        sharedPreferences=getSharedPreferences("preferences",Context.MODE_PRIVATE);
+        currentColor=sharedPreferences.getString("color","");
+        colorImageButton =(ImageButton)findViewById(R.id.colorChange);
+
+        colorImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //点击该按钮时显示出修改背景颜色的对话框
+                final AlertDialog alertDialog=new AlertDialog.Builder(NotesList.this).create();
+                alertDialog.show();
+                Window window=alertDialog.getWindow();
+                window.setContentView(R.layout.change_backgroundcolor);
+                final LinearLayout linearLayout=(LinearLayout)findViewById(R.id.main);
+                //获取不同颜色的显示
+                TextView textView_grey=(TextView)alertDialog.getWindow().findViewById(R.id.color1_grey);
+                TextView textView_yellow=(TextView)alertDialog.getWindow().findViewById(R.id.color2_yellow);
+                TextView textView_pink=(TextView)alertDialog.getWindow().findViewById(R.id.color3_pink);
+                //对各种颜色进行事件监听
+                textView_grey.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        currentColor="#f5f5f5";
+                        linearLayout.setBackgroundColor(Color.parseColor(currentColor));
+                        //设置笔记本背景颜色
+                        putColor(currentColor);
+                        alertDialog.dismiss();
+
+                    }
+                });
+
+                textView_yellow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        currentColor="#FFF68F";
+                        linearLayout.setBackgroundColor(Color.parseColor(currentColor));
+                        putColor(currentColor);
+                        alertDialog.dismiss();
+                    }
+                });
+                textView_pink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        currentColor="#FFBBFF";
+                        linearLayout.setBackgroundColor(Color.parseColor(currentColor));
+                        putColor(currentColor);
+                        alertDialog.dismiss();
+                    }
+                });
+            }
+
+        });
+
+
+
+
     }
+
+
+
+    private void putColor(String color) {
+        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("color", color);
+        editor.commit();
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
     /**
      * Called when the user clicks the device's Menu button the first time for
