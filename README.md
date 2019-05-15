@@ -124,7 +124,7 @@ values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE,time);
 
 ### 6.成功显示时间戳
 -------
-![](https://github.com/S-mile/images/blob/master/lab6/1.png)
+  <img src="./pic/timestamp.png" width=480 height= />
 -------
 ## 二.查询框
 * 如果想在屏幕中显示其他控件，可以采用如下方法：1.代码中添加：setContentView(R.layout.main)2.在xml文件中添加一个LIstView控件和一个SearchView控件，注意LIstView控件id必须为"@id/Android:list"表示匹配的ListView  
@@ -189,7 +189,7 @@ searchView = (SearchView) findViewById(R.id.search);
 ```
 ### 5.在NoteList.java中的onCreate方法中添加setContentView(R.layout.notepad_main);这句话，实现搜索框
 -------
-![](https://github.com/S-mile/images/blob/master/lab6/2.png)
+  <img src="./pic/search.png" width=480 height= />
 -------
 ## 三.修改背景色
 ###  1.先创建一个change_backgroundcolor.xml
@@ -317,57 +317,42 @@ searchView = (SearchView) findViewById(R.id.search);
 ```
 ### 5.结果
 -------
-![](https://github.com/S-mile/images/blob/master/lab6/3.png)
+  <img src="./pic/color.png" width=480 height= />
 -------
-*   点击黄色颜色块
+
 -------
-![](https://github.com/S-mile/images/blob/master/lab6/4.png)
+
 -------
-## 四.添加listView的行删除按钮
-###  2.如刚刚noteslist_item_new.xml中的删除按钮
+## 四.添加分享功能
+  选择某一条note，点击可将内容分享至其他应用，使用Intent.ACTION_SEND来实现。具体效果和代码如下  
+
+
+###  1.设置好点击事件后，通过获取当前选中的note的内容（mCursor.getString(1)即为我们要获取的内容），然后将其分享到我们想要分享的应用  
+
 ```java
- <ImageButton
-    android:id="@+id/deleteButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_menu_delete"
-    android:background="@android:color/transparent"/>
+       Uri noteUri = ContentUris.withAppendedId(getIntent().getData(), info.id);
+        Cursor mCursor = managedQuery(
+                noteUri,         // The URI that gets multiple notes from the provider.
+                PROJECTION2,   // A projection that returns the note ID and note content for each note.
+                null,         // No "where" clause selection criteria.
+                null,         // No "where" clause selection values.
+                null          // Use the default sort order (modification date, descending)
+        );
 
 ```
-###  2.设置按钮点击事件，重写bind View();
+
 ```java
-    private class MySimpleCursorAdapter extends SimpleCursorAdapter {
-    ImageButton imageButton, colorButton;
-    int id;
-
-    public MySimpleCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
-        super(context, layout, c, from, to);
-    }
-
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        super.bindView(view, context, cursor);
-        //绑定删除按钮
-        imageButton = (ImageButton) view.findViewById(R.id.deleteButton);
-        //获取_id
-        int position = cursor.getColumnIndex(NotePad.Notes._ID);
-        id = cursor.getInt(position);
-        final Uri muri = ContentUris.withAppendedId(getIntent().getData(), id);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getContentResolver().delete(muri, null, null);
-            }
-        });
-    }
-}
+        Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+                    intent.putExtra(Intent.EXTRA_TEXT, "hi,我是小童，来自NotePad的分享："+mCursor.getString(1));
+                    startActivity(Intent.createChooser(intent, "分享到"));
 
 ```
+
 ### 3.结果
 -------
-![](https://github.com/S-mile/images/blob/master/lab6/5.png)
--------
-*   点击删除按钮后
--------
-![](https://github.com/S-mile/images/blob/master/lab6/6.png)
+  <img src="./pic/share1.png" width=480 height= />
+
+  <img src="./pic/share2.png" width=480 height= />
 -------
