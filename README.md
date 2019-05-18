@@ -4,6 +4,7 @@
 * 查询框
 * 修改背景色 
 * 添加分享功能
+* 添加撤销操作
 ## 一.添加时间戳 
 ### 1.新建一个noteslist_item_new.xml,在这中间设置要显示的时间框以及图片
 ```java
@@ -356,3 +357,97 @@ searchView = (SearchView) findViewById(R.id.search);
 
   <img src="./pic/share2.png" width=480 height= />
 -------
+
+###  五.按步撤销功能
+
+#####  源工程中已经含有撤销功能，但是只是针对于一次性撤销，即将该日记重置为打开前的状态。我实现的撤销在于可以记录你的每一次“点击保存”前的状态，这样在写长文本日记的时候比较方便，不用一步推倒，重新来过。
+
+
+
+演示如下
+##### 撤销前先点击保存记录
+
+  <img src="./pic/revert0.png" width=480 height= />
+
+  <img src="./pic/revert_1.png" width=480 height= />
+
+  <img src="./pic/revert_2.png" width=480 height= />
+
+
+** 基于备忘录模式，自定义控件NoteEdittext继承自EditText，增加了可以保存历史文本内容的功能 **
+
+
+```
+public class Memento {
+    private String text;
+    private int cursor;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public int getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(int cursor) {
+        this.cursor = cursor;
+    }
+}
+
+```
+
+
+```
+public class NoteCaretaker {
+    //最大存储量
+    private static final int MAX = 30;
+    List<Memento> mMementoList = new ArrayList<>(MAX);
+
+    int mIndex = 0;//索引
+
+    public void saveMemento(Memento memento) {
+        if (mMementoList.size() > MAX) {
+            mMementoList.remove(0);//存满之后从第一条开始删
+        } else {
+            mMementoList.add(memento);
+            mIndex = mMementoList.size() - 1;
+        }
+    }
+
+    //获取上一个存档信息
+    public Memento getPrevMemento() {
+        mIndex = mIndex > 0 ? --mIndex : 0;
+        return mMementoList.get(mIndex);
+    }
+
+    //重做
+    public Memento getNextMemento() {
+        mIndex = mIndex < mMementoList.size() - 1 ? ++mIndex : mIndex;
+        return mMementoList.get(mIndex);
+    }
+
+}
+```
+
+```
+public class NoteEditText extends android.support.v7.widget.AppCompatEditText {
+public Memento mementoFactory() {
+      Memento noteMemento = new Memento();
+      noteMemento.setText(getText().toString());
+      noteMemento.setCursor(getSelectionStart());
+      return noteMemento;
+  }
+
+  public void restore(Memento memento) { //撤销
+      setText(memento.getText());
+      setSelection(memento.getCursor());
+  }
+//省略部分代码，具体实现请看源码
+}
+
+```
